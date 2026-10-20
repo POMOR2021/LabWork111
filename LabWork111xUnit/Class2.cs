@@ -6,7 +6,7 @@ namespace LabWork111xUnit
 {
     internal class Class2
     {
-        public void func()
+        public void func1()
         {
 
         }
