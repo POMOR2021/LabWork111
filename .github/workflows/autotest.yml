@@ -27,11 +27,10 @@ jobs:
     - name: Build solution	
       run: dotnet build --no-restore --configuration Release
 
-    - name: Run tests and generate TRX log  # Запуск тестов
-      run: dotnet test --no-build --configuration Release --logger "trx;LogFileName=test_results.trx"
+    - name: Run tests, generate TRX log and Code Coverage  # Запуск тестов + сбор покрытия
+      run: dotnet test --no-build --configuration Release --logger "trx;LogFileName=test_results.trx" --collect:"XPlat Code Coverage"
   
-
-    - name: Test Report		# Сохранение отчета
+    - name: Test Report		# Сохранение отчета о прохождении тестов
       uses: dorny/test-reporter@v2
       if: success() || failure() # запускает этот шаг в любом случае
       with:
@@ -39,3 +38,22 @@ jobs:
         path: "**/*.trx"    # Путь сохранения результатов теста
         reporter: dotnet-trx   
 
+    - name: ReportGenerator # Генерация красивого отчета покрытия кода
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.5.11
+      if: success() || failure()
+      with:
+        reports: '**/coverage.cobertura.xml' # Поиск сгенерированного файла покрытия
+        targetdir: 'coveragereport' # Папка для результатов
+        reporttypes: 'HtmlInline;MarkdownSummaryGithub' # Форматы: Веб-страница + Сводка для GitHub
+
+    - name: Upload coverage report artifact # Сохранение HTML-отчета в артефакты сборки
+      uses: actions/upload-artifact@v4
+      if: success() || failure()
+      with:
+        name: CoverageReport
+        path: coveragereport
+
+    - name: Publish coverage in build summary # Вывод таблицы покрытия прямо в Summary сборки
+      if: success() || failure()
+      run: cat coveragereport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+      shell: bash
