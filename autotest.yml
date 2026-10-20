@@ -29,3 +29,11 @@ jobs:
 
     - name: Run tests
       run: dotnet test --no-build --configuration Release --verbosity normal
+    - name: Test Report		# Сохранение отчета
+      uses: dorny/test-reporter@v2
+      if: success() || failure() # запускает этот шаг в любом случае
+      with:
+        name: Test results  
+        path: "**/*.trx"    # Путь сохранения результатов теста
+        reporter: dotnet-trx   # Формат результата
+
