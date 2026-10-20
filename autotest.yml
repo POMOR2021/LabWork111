@@ -36,5 +36,5 @@ jobs:
       with:
         name: Test results  
         path: "**/*.trx"    # Путь сохранения результатов теста
-        reporter: dotnet-trx   # Формат результата
+        reporter: dotnet-trx   
 
