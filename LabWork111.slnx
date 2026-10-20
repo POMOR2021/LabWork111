@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/.github/" />
+  <Folder Name="/.github/workflows/">
+    <File Path="autotest.yml" />
+  </Folder>
+  <Project Path="LabWork111/LabWork111.csproj" />
+  <Project Path="LabWork111xUnit/LabWork111xUnit.csproj" />
+</Solution>
