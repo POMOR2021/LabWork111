@@ -35,6 +35,6 @@ jobs:
       if: success() || failure() # запускает этот шаг в любом случае
       with:
         name: Test results  
-        path: "**/*.trx"    # Путь сохранения результатов теста
+        path: "**/*.trx"    
         reporter: dotnet-trx   
 
